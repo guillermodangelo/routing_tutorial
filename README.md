@@ -32,6 +32,8 @@ cd C:\Users\guillermo\Documents\data\osrm\malta
 curl.exe -O https://download.geofabrik.de/europe/malta-latest.osm.pbf
 ```
 
+
+```powershell
 osrm-extract
 docker run -t -v "$(pwd):/data" osrm/osrm-backend osrm-extract -p /opt/car.lua /data/malta-latest.osm.pbf
 
@@ -43,5 +45,6 @@ docker run -t -v "$(pwd):/data" osrm/osrm-backend osrm-customize /data/malta-lat
 
 run the container
 docker run -t -i -p 5000:5000 -v "$(pwd):/data" osrm/osrm-backend osrm-routed --algorithm mld /data/malta-latest.osrm
+```
 
 
