@@ -1,24 +1,31 @@
 # routing_tutorial
 
+Thsi repo contains the code for a routing tutorial. We'll be starting with the setting up a local OSRM server using Docker.
+
 
 ## Setting up OSRM in Ubuntu using Docker
 
+Using Bash, navigate to a directory where you have permissions to read and write.
+
 ```bash
-mkdir -p /data/osrm/Uruguay
+# create a directory for the data
+mkdir -p /data/osrm/malta
+cd /data/osrm/malta
 
-cd /data/osrm/Uruguay
+# download the OSM data for Malta
+wget https://download.geofabrik.de/south-america/malta-latest.osm.pbf
 
-wget https://download.geofabrik.de/south-america/uruguay-latest.osm.pbf
+# run the osrm-extract command to extract the data from the PBF file
+docker run -t -v $(pwd):/data osrm/osrm-backend osrm-extract -p /opt/car.lua /data/malta-latest.osm.pbf
 
-docker run -t -v $(pwd):/data osrm/osrm-backend osrm-extract -p /opt/car.lua /data/uruguay-latest.osm.pbf
+# run the osrm-partition command to partition the graph for faster routing
+docker run -t -v $(pwd):/data osrm/osrm-backend osrm-partition /data/malta-latest.osrm
 
-docker run -t -v $(pwd):/data osrm/osrm-backend osrm-extract -p /opt/car.lua /data/uruguay-latest.osm.pbf
+# run the osrm-customize command
+docker run -t -v $(pwd):/data osrm/osrm-backend osrm-customize /data/malta-latest.osrm
 
-docker run -t -v $(pwd):/data osrm/osrm-backend osrm-partition /data/uruguay-latest.osrm
-
-docker run -t -v $(pwd):/data osrm/osrm-backend osrm-customize /data/uruguay-latest.osrm
-
-docker run -t -i -p 5000:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --algorithm mld /data/uruguay-latest.osrm
+# run the container
+docker run -t -i -p 5000:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --algorithm mld /data/malta-latest.osrm
 ```
 
 ## Setting up OSRM in Windows
