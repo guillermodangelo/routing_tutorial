@@ -8,12 +8,12 @@ Thsi repo contains the code for a routing tutorial. We'll be starting with the s
 Using Bash, navigate to a directory where you have permissions to read and write.
 
 ```bash
-# create a directory for the data
-mkdir -p /data/osrm/malta
+# create a directory for the data, suso su por superuser permissions
+mkdir -p data/osrm/malta
 cd /data/osrm/malta
 
 # download the OSM data for Malta
-wget https://download.geofabrik.de/south-america/malta-latest.osm.pbf
+wget https://download.geofabrik.de/europe/malta-latest.osm.pbf
 
 # run the osrm-extract command to extract the data from the PBF file
 docker run -t -v $(pwd):/data osrm/osrm-backend osrm-extract -p /opt/car.lua /data/malta-latest.osm.pbf
@@ -61,3 +61,10 @@ We're now ready to run the `docker run` command to start the OSRM server. We'll 
 # run the container
 docker run -t -i -p 5000:5000 -v "$(pwd):/data" osrm/osrm-backend osrm-routed --algorithm mld /data/malta-latest.osrm
 ```
+
+Since the exposed port is the 5000, you can check if the service is up by visiting this URL in your browser:
+http://127.0.0.1:5000/
+
+
+Example: curl "http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson"
+
