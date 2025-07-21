@@ -1,6 +1,6 @@
 # routing_tutorial
 
-Thsi repo contains the code for a routing tutorial. We'll be starting with the setting up a local OSRM server using Docker.
+This repo contains the code for a routing tutorial. We'll be starting with the setting up a local OSRM server using Docker.
 
 If you don't know what Docker is or how to install it, please refer to the [documentation](https://docs.docker.com/desktop).
 
