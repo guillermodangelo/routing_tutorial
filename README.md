@@ -5,6 +5,8 @@ Thsi repo contains the code for a routing tutorial. We'll be starting with the s
 If you don't know what Docker is or how to install it, please refer to the [documentation](https://docs.docker.com/desktop).
 
 
+![Example](images/pelotita.gif "Moving ball")
+
 ## Setting up OSRM in Ubuntu using Docker
 
 Using Bash, navigate to a directory where you have permissions to read and write.
@@ -32,7 +34,7 @@ docker run -t -i -p 5000:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --al
 
 ## Setting up OSRM in Windows
 
-Please be sure that Docker us installed and working. Installing Docker in Windows sistemas may not be so straight-forward as installing it in Linux-based environments.
+Please be sure that Docker us installed and working. Installing Docker in Windows sistemas may not be so straight-forward as installing it in Linux-based environments. **You'll also need to be running Docker Desktop**.
 
 Using PowerShell, navigate to a directory where you have permissions to read and write.
 
@@ -93,16 +95,15 @@ from qgis.core import (
 import json
 import urllib.request
 
-def load_route_from_osrm():
-    """Fetch route from OSRM server and create a QGIS line layer"""
-    url = "http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson"
-    
+URL = "http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson"
+
+
+def load_route_from_osrm(url):
+    """Fetch route from OSRM server and create a QGIS line layer"""  
     try:
-        # Fetch the route data
         with urllib.request.urlopen(url) as response:
             data = json.loads(response.read().decode('utf-8'))
         
-        # Verify response
         if data.get('code') != 'Ok' or not data.get('routes'):
             print("Error: No valid route found in response")
             return None
@@ -133,9 +134,12 @@ def load_route_from_osrm():
         return None
 
 # Run the function
-load_route_from_osrm()
+load_route_from_osrm(URL)
 ```
 
+Example result:
+
+![malta](images\malta.png)
 
 
 ## References
