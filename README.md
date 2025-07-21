@@ -2,6 +2,8 @@
 
 Thsi repo contains the code for a routing tutorial. We'll be starting with the setting up a local OSRM server using Docker.
 
+If you don't know what Docker is or how to install it, please refer to the [documentation](https://docs.docker.com/desktop).
+
 
 ## Setting up OSRM in Ubuntu using Docker
 
@@ -29,6 +31,8 @@ docker run -t -i -p 5000:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --al
 ```
 
 ## Setting up OSRM in Windows
+
+Please be sure that Docker us installed and working. Installing Docker in Windows sistemas may not be so straight-forward as installing it in Linux-based environments.
 
 Using PowerShell, navigate to a directory where you have permissions to read and write.
 
@@ -65,6 +69,80 @@ docker run -t -i -p 5000:5000 -v "$(pwd):/data" osrm/osrm-backend osrm-routed --
 Since the exposed port is the 5000, you can check if the service is up by visiting this URL in your browser:
 http://127.0.0.1:5000/
 
+You should see a this message:
+
+`{"message":"URL string malformed close to position 1: \"\/\"","code":"InvalidUrl"}`
+
+A propper query for testing would be something like this:
+http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson
+
+The response is a JSON dictionary, that contains the calculated fastest route between the two input pair of coordinates, among other things.
 
 Example: curl "http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson"
+
+You can visualize this in QGIS, using the following pyQGIS code:
+
+```python
+from qgis.core import (
+    QgsProject, 
+    QgsVectorLayer, 
+    QgsFeature, 
+    QgsGeometry, 
+    QgsPointXY
+)
+import json
+import urllib.request
+
+def load_route_from_osrm():
+    """Fetch route from OSRM server and create a QGIS line layer"""
+    url = "http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson"
+    
+    try:
+        # Fetch the route data
+        with urllib.request.urlopen(url) as response:
+            data = json.loads(response.read().decode('utf-8'))
+        
+        # Verify response
+        if data.get('code') != 'Ok' or not data.get('routes'):
+            print("Error: No valid route found in response")
+            return None
+            
+        # Extract coordinates from the first route
+        coordinates = data['routes'][0]['geometry']['coordinates']
+        
+        # Create memory layer
+        layer = QgsVectorLayer("LineString?crs=EPSG:4326", "OSRM Route", "memory")
+        provider = layer.dataProvider()
+        
+        # Create and add feature
+        feature = QgsFeature()
+        points = [QgsPointXY(lon, lat) for lon, lat in coordinates]
+        feature.setGeometry(QgsGeometry.fromPolylineXY(points))
+        provider.addFeature(feature)
+        
+        # Add to project and zoom
+        QgsProject.instance().addMapLayer(layer)
+        iface.mapCanvas().setExtent(layer.extent())
+        iface.mapCanvas().refresh()
+        
+        print(f"Route loaded with {len(points)} points")
+        return layer
+        
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return None
+
+# Run the function
+load_route_from_osrm()
+```
+
+
+
+## References
+
+[Ruteo de alta perfomance con OSRM](https://rpubs.com/HAVB/osrm)
+
+[Project OSRM](https://project-osrm.org/)
+
+
 
