@@ -139,8 +139,7 @@ load_route_from_osrm(URL)
 
 Example result:
 
-![malta](images\malta.png)
-
+![malta](images/malta.png "Example of Malta")
 
 ## References
 
