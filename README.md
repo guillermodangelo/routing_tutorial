@@ -80,9 +80,12 @@ http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=
 
 The response is a JSON dictionary, that contains the calculated fastest route between the two input pair of coordinates, among other things.
 
-Example: curl "http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson"
+You can also send a request to the server using `curl`:
+```bash
+curl "http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson"
+```
 
-You can visualize this in QGIS, using the following pyQGIS code:
+You can visualize this in QGIS, using the following pyQGIS code, executed for the Python console:
 
 ```python
 from qgis.core import (
@@ -140,6 +143,7 @@ load_route_from_osrm(URL)
 Example result:
 
 ![malta](images/malta.png "Example of Malta")
+
 
 ## References
 
