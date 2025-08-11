@@ -34,7 +34,7 @@ docker run -t -i -p 5000:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --al
 
 ## Setting up OSRM in Windows
 
-Please be sure that Docker us installed and working. Installing Docker in Windows systems may not be so straight-forward as installing it in Linux-based environments. **You'll also need to be running Docker Desktop**.
+Please be sure that Docker us installed and working. Installing Docker in Windows sistemas may not be so straight-forward as installing it in Linux-based environments. **You'll also need to be running Docker Desktop**.
 
 Using PowerShell, navigate to a directory where you have permissions to read and write.
 
@@ -71,7 +71,7 @@ docker run -t -i -p 5000:5000 -v "$(pwd):/data" osrm/osrm-backend osrm-routed --
 Since the exposed port is the 5000, you can check if the service is up by visiting this URL in your browser:
 http://127.0.0.1:5000/
 
-You should see a this message:
+You should see this message:
 
 `{"message":"URL string malformed close to position 1: \"\/\"","code":"InvalidUrl"}`
 
