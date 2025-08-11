@@ -34,7 +34,7 @@ docker run -t -i -p 5000:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --al
 
 ## Setting up OSRM in Windows
 
-Please be sure that Docker us installed and working. Installing Docker in Windows sistemas may not be so straight-forward as installing it in Linux-based environments. **You'll also need to be running Docker Desktop**.
+Please be sure that Docker us installed and working. Installing Docker in Windows systems may not be so straight-forward as installing it in Linux-based environments. **You'll also need to be running Docker Desktop**.
 
 Using PowerShell, navigate to a directory where you have permissions to read and write.
 
@@ -75,7 +75,7 @@ You should see a this message:
 
 `{"message":"URL string malformed close to position 1: \"\/\"","code":"InvalidUrl"}`
 
-A propper query for testing would be something like this:
+A proper query for testing would be something like this:
 http://127.0.0.1:5000/route/v1/driving/14.5035,35.8976;14.5144,35.8989?overview=full&geometries=geojson
 
 The response is a JSON dictionary, that contains the calculated fastest route between the two input pair of coordinates, among other things.
