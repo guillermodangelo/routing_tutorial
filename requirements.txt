@@ -62,3 +62,4 @@ tzdata==2025.2
 urllib3==2.5.0
 wcwidth==0.2.13
 xyzservices==2025.4.0
+leafmap
